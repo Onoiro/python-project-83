@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "hexlet-code"
+version = "0.1.0"
+description = "Free check sites for SEO suitability"
+authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "page_analyzer"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flask = "^2.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
