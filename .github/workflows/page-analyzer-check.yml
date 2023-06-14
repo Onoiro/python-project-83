@@ -1,4 +1,4 @@
-name: page-analizer check
+name: Abo check
 
 on:
  - push
