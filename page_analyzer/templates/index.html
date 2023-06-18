@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Page analyzer</title>
+  </head>
+  <body>
+    <div>
+        <h1>Анализатор страниц</h1>
+        <p>Бесплатно проверяйте сайты на SEO-пригодность</p>
+        <form>
+            <input type="text" name="url" placeholder="https://www.example.com" value="{{ search }}" />
+            <input type="submit" value="ПРОВЕРИТЬ" />
+        </form>
+    </div>
+    {% if messages %}
+      <div class=flashes>
+      {% for category, message in messages %}
+        <p class="{{ category }}" style="color:green">{{ message }}</p>
+      {% endfor %}
+      </div>
+    {% endif %}
+  </body>
+</html>
