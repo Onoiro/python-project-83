@@ -10,8 +10,14 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():
-    return 'Hello User!'
+def main_page():
+    term = request.args.get('url', '', type=str)
+    messages = get_flashed_messages(with_categories=True)
+    return render_template(
+        'index.html',
+        messages=messages,
+        search=term
+    )
 
 
 @app.errorhandler(404)
