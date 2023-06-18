@@ -5,6 +5,14 @@ description = "Free check sites for SEO suitability"
 authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "page_analyzer"}]
+classifiers = ["Programming Language :: Python :: 3",
+               "Environment :: Console"]
+repository = "https://github.com/Onoiro/python-project-83"
+
+
+[tool.poetry.scripts]
+page-analyzer = "page_analyzer.app:app"
+
 
 [tool.poetry.dependencies]
 python = "^3.8.1"
