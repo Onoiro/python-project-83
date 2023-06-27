@@ -1,9 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% block title %}Приложение Flask{% endblock %}</title>
-</head>
-<body>
-    <h1>{{h1}}</h1>
-</body>
+<!doctype html>
+<html lang="en">
+    <head>
+        {% block head %}
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        {% block styles %}
+            <!-- Bootstrap CSS -->
+            {{ bootstrap.load_css() }}
+        {% endblock %}
+
+        <title>{% block title %}Page analyzer{% endblock %}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <!-- Your page content -->
+        {% block content %}
+            <div class="jumbotron text-center">
+            <h1>{{h1}}</h1>
+            </div>
+        {% endblock %}
+    </body>
 </html>
+
