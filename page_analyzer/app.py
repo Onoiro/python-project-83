@@ -15,6 +15,7 @@ def index():
     messages = get_flashed_messages(with_categories=True)
     return render_template(
         'index.html',
+        h1 = "Анализатор страниц",
         messages=messages,
         search=term
     )
