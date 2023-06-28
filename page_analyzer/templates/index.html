@@ -1,44 +1,17 @@
-<!-- <!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page analyzer</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  </head>
-  <body>
-    <div>
-        <h1>Анализатор страниц</h1>
-        <p>Бесплатно проверяйте сайты на SEO-пригодность</p>
-        <form>
-            <input type="text" name="url" placeholder="https://www.example.com" value="{{ search }}" />
-            <input type="submit" value="ПРОВЕРИТЬ" />
-        </form>
-    </div>
-    {% if messages %}
-      <div class=flashes>
-      {% for category, message in messages %}
-        <p class="{{ category }}" style="color:green">{{ message }}</p>
-      {% endfor %}
-      </div>
-    {% endif %}
-  </body>
-</html> -->
-
 {% extends 'bootstrap/base.html' %}
 
 {% block content %}
-   {{super()}}
-   <div class="border border-secondary border-1 rounded">
-    <div class="container text-center">
-      <h1>{{ h1 }}</h1>
-      <label>Бесплатно проверяйте сайты на SEO-пригодность</label>
-      <form class="form-inline">
-        <div class="form-group">
-          <input type="text" name="url" class="form-control" placeholder="https://www.example.com" value="{{ search }}">
-          <button type="submit" class="btn btn-primary">ПРОВЕРИТЬ</button>
+  <main>
+    <h1></h1>
+      <div class="container">
+        <div class="jumbotron">
+          <h1>{{ h1 }}</h1>
+          <label>Бесплатно проверяйте сайты на SEO-пригодность</label>
+          <form>
+            <input type="text" name="url" placeholder="https://www.example.com" value="{{ search }}">
+            <button type="submit" class="btn btn-primary">ПРОВЕРИТЬ</button>
+          </form>
         </div>
-      </form>
-    </div>
-  </div>
+      </div>
+  </main>
 {% endblock %}
