@@ -8,8 +8,12 @@ import json
 
 app = Flask(__name__)
 
+
 DATABASE_URL = os.getenv('DATABASE_URL')
-conn = psycopg2.connect(DATABASE_URL)
+try:
+    conn = psycopg2.connect(DATABASE_URL)
+except:
+    print('Can`t establish connection to database')
 
 
 @app.route('/')
