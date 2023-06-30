@@ -2,11 +2,14 @@
 
 from flask import Flask, request, make_response, render_template, \
                   redirect, url_for, flash, get_flashed_messages, session
-                  
+import psycopg2
 import os
 import json
 
 app = Flask(__name__)
+
+DATABASE_URL = os.getenv('DATABASE_URL')
+conn = psycopg2.connect(DATABASE_URL)
 
 
 @app.route('/')
