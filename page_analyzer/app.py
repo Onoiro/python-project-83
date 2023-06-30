@@ -2,6 +2,7 @@
 
 from flask import Flask, request, make_response, render_template, \
                   redirect, url_for, flash, get_flashed_messages, session
+from dotenv import load_dotenv
 import psycopg2
 import os
 import json
