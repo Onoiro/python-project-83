@@ -6,7 +6,7 @@ authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
 packages = [{include = "page_analyzer"}]
 classifiers = ["Programming Language :: Python :: 3",
-               "Environment :: Console"]
+               "Environment :: Web"]
 repository = "https://github.com/Onoiro/python-project-83"
 
 

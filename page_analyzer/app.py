@@ -9,15 +9,17 @@ import json
 
 app = Flask(__name__)
 
-
+load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
+SECRET_KEY = os.getenv('SECRET_KEY')
+
 try:
     conn = psycopg2.connect(DATABASE_URL)
 except:
     print('Can`t establish connection to database')
 
 
-@app.route('/')
+@app.get('/')
 def index():
     term = request.args.get('url', '', type=str)
     messages = get_flashed_messages(with_categories=True)
