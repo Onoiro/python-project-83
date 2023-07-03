@@ -6,13 +6,14 @@ from dotenv import load_dotenv
 import psycopg2
 import os
 from datetime import datetime
-import json
+
 
 app = Flask(__name__)
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+print(DATABASE_URL)
 
 
 def connect_db():
@@ -37,12 +38,14 @@ def index():
 
 @app.post('/urls/')
 def urls_post():
-    url = str(request.args.get('url'))
+    url = request.form.get('url')
     created_at = datetime.now()
     print(url, created_at)
     conn = connect_db()
-    with conn.cursor() as cur:
-        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s)', (url, created_at))
+    cur = conn.cursor()
+    cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s)', (url, created_at))
+    conn.commit()
+    cur.close()
     conn.close()
     return redirect(url_for('index'))
 
