@@ -41,7 +41,7 @@ def index():
 @app.post('/urls/')
 def urls_post():
     if not validators.url(request.form.get('url')):
-        flash('Некорректный URL','error')
+        flash('Некорректный URL','danger')
         return redirect(url_for('index'))
     url_parts = urlparse(request.form.get('url'))
     url = f"{url_parts.scheme}://{url_parts.netloc}"
