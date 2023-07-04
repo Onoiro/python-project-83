@@ -7,6 +7,7 @@ import psycopg2
 import os
 from datetime import datetime
 from urllib.parse import urlparse
+import validators
 
 
 app = Flask(__name__)
@@ -39,6 +40,9 @@ def index():
 
 @app.post('/urls/')
 def urls_post():
+    if not validators.url(request.form.get('url')):
+        flash('Некорректный URL','error')
+        return redirect(url_for('index'))
     url_parts = urlparse(request.form.get('url'))
     url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = datetime.now()
