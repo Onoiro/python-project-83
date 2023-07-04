@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import psycopg2
 import os
 from datetime import datetime
+from urllib.parse import urlparse
 
 
 app = Flask(__name__)
@@ -38,9 +39,9 @@ def index():
 
 @app.post('/urls/')
 def urls_post():
-    url = request.form.get('url')
+    url_parts = urlparse(request.form.get('url'))
+    url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = datetime.now()
-    print(url, created_at)
     conn = connect_db()
     cur = conn.cursor()
     cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s)', (url, created_at))
