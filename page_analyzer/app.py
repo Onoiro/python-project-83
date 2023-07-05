@@ -39,6 +39,15 @@ def index():
     )
 
 
+@app.route('/urls')
+def urls():
+    messages = get_flashed_messages(with_categories=True)
+    return render_template(
+        'urls.html',
+        messages=messages
+    )
+
+
 @app.post('/urls/')
 def urls_post():
     if not validators.url(request.form.get('url')):
@@ -56,7 +65,7 @@ def urls_post():
         flash('Страница успешно добавлена', 'success')
     except psycopg2.errors.UniqueViolation:
         flash('Страница уже существует', 'info')
-    return redirect(url_for('index'))
+    return redirect(url_for('urls'))
 
 
 @app.errorhandler(404)
