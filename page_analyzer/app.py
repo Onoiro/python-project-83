@@ -21,9 +21,10 @@ print(DATABASE_URL)
 def connect_db():
     try:
         conn = psycopg2.connect(DATABASE_URL)
+        cur = conn.cursor()
     except:
         print('Can`t establish connection to database')
-    return conn
+    return conn, cur
 
 
 @app.get('/')
@@ -46,13 +47,15 @@ def urls_post():
     url_parts = urlparse(request.form.get('url'))
     url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = datetime.now()
-    conn = connect_db()
-    cur = conn.cursor()
-    cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s)', (url, created_at))
-    conn.commit()
-    cur.close()
-    conn.close()
-    flash('Страница успешно добавлена', 'success')
+    conn, cur = connect_db()
+    try:
+        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s)', (url, created_at))
+        conn.commit()
+        cur.close()
+        conn.close()
+        flash('Страница успешно добавлена', 'success')
+    except psycopg2.errors.UniqueViolation:
+        flash('Страница уже существует', 'info')
     return redirect(url_for('index'))
 
 
