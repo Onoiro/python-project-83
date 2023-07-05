@@ -52,6 +52,7 @@ def urls_post():
     conn.commit()
     cur.close()
     conn.close()
+    flash('Страница успешно добавлена', 'success')
     return redirect(url_for('index'))
 
 
