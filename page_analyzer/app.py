@@ -30,12 +30,7 @@ def connect_db():
 
 @app.get('/')
 def index():
-    term = request.args.get('url', '', type=str)
-    messages = get_flashed_messages(with_categories=True)
-    return render_template(
-        'index.html',
-        messages=messages
-    )
+    return render_template('index.html')
 
 
 @app.get('/urls/')
