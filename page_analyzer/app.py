@@ -48,7 +48,6 @@ def urls():
 @app.get('/urls/<url_id>')
 def url(url_id):
     messages = get_flashed_messages(with_categories=True)
-    # url_data = {}
     conn, cur = connect_db()
     cur.execute("SELECT * FROM urls WHERE id = (%s)", (url_id, ))
     url_data = cur.fetchone()
@@ -65,7 +64,11 @@ def url(url_id):
 
 @app.post('/urls/')
 def urls_post():
-    if not validators.url(request.form.get('url')):
+    input = request.form.get('url')
+    if len(input) > 255:
+        flash('URL превышает 255 символов', 'danger')
+        return redirect(url_for('index'))
+    if not validators.url(input):
         flash('Некорректный URL', 'danger')
         return redirect(url_for('index'))
     url_parts = urlparse(request.form.get('url'))
@@ -76,7 +79,6 @@ def urls_post():
         cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id', (url, created_at))
         url_data = cur.fetchone()
         url_id = url_data['id']
-        print(url_id)
         conn.commit()
         cur.close()
         conn.close()
@@ -84,7 +86,6 @@ def urls_post():
     except psycopg2.errors.UniqueViolation:
         flash('Страница уже существует', 'info')
     return redirect(url_for('url', url_id=url_id))
-    # return redirect(url_for('index', url_id=url_id))
 
 
 @app.errorhandler(404)
