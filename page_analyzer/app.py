@@ -66,20 +66,23 @@ def urls_post():
     if not validators.url(input):
         flash('Некорректный URL', 'danger')
         return redirect(url_for('index'))
-    url_parts = urlparse(request.form.get('url'))
+    url_parts = urlparse(input)
     url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = datetime.now()
     conn, cur = connect_db()
     try:
-        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id', (url, created_at))
+        cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
         url_data = cur.fetchone()
         url_id = url_data['id']
-        conn.commit()
-        cur.close()
-        conn.close()
-        flash('Страница успешно добавлена', 'success')
-    except psycopg2.errors.UniqueViolation:
         flash('Страница уже существует', 'info')
+    except:
+        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id', (url, created_at))
+        conn.commit()
+        url_data = cur.fetchone()
+        url_id = url_data['id']
+        flash('Страница успешно добавлена', 'success')
+    cur.close()
+    conn.close()
     return redirect(url_for('url', url_id=url_id))
 
 
