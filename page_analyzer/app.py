@@ -38,7 +38,7 @@ def urls():
     conn, cur = connect_db()
     with conn.cursor(cursor_factory=DictCursor) as cur:
         cur.execute("SELECT * FROM urls")
-        urls = cur.fetchall()
+        urls = reversed(cur.fetchall())
     return render_template(
         'urls.html',
         urls=urls
