@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from flask import Flask, request, make_response, render_template, \
-                  redirect, url_for, flash, get_flashed_messages, session
+from flask import Flask, request, render_template, \
+                  redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import DictCursor
@@ -75,19 +75,22 @@ def urls_post():
     url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = datetime.now()
     conn, cur = connect_db()
+    cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
+    # if url not exist url_data will get None so need except TypeError
+    url_data = cur.fetchone()
     try:
-        cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
-        url_data = cur.fetchone()
         url_id = url_data['id']
         flash('Страница уже существует', 'info')
-    except:
-        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) RETURNING id', (url, created_at))
+    except TypeError: # if URL not exist
+        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
+                     RETURNING id', (url, created_at))
         conn.commit()
         url_data = cur.fetchone()
         url_id = url_data['id']
         flash('Страница успешно добавлена', 'success')
-    cur.close()
-    conn.close()
+    finally:
+        cur.close()
+        conn.close()
     return redirect(url_for('url', url_id=url_id))
 
 
