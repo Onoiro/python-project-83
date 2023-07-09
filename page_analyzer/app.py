@@ -23,7 +23,7 @@ def connect_db():
     try:
         conn = psycopg2.connect(DATABASE_URL)
         cur = conn.cursor(cursor_factory=DictCursor)
-    except:
+    except psycopg2.OperationalError:
         print('Can`t establish connection to database')
     return conn, cur
 
@@ -81,7 +81,7 @@ def urls_post():
     try:
         url_id = url_data['id']
         flash('Страница уже существует', 'info')
-    except TypeError: # if URL not exist
+    except TypeError:  # if URL not exist
         cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
                      RETURNING id', (url, created_at))
         conn.commit()
