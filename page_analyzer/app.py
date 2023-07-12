@@ -94,6 +94,14 @@ def urls_post():
     return redirect(url_for('url', url_id=url_id))
 
 
+# @app.post('urls/<id>/checks')
+# def checks():
+#     conn, cur = connect_db()
+#     last_check = datetime.now()
+#     flash('Страница успешно проверена', 'success')
+#     return redirect(url_for('urls', last_check=last_check))
+
+
 @app.errorhandler(404)
 def not_found(error):
     return 'Oops!', 404
