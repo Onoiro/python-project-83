@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import DictCursor
 import os
-from datetime import datetime
+from datetime import date
 from urllib.parse import urlparse
 import validators
 
@@ -73,7 +73,7 @@ def urls_post():
         return redirect(url_for('index'))
     url_parts = urlparse(input)
     url = f"{url_parts.scheme}://{url_parts.netloc}"
-    created_at = datetime.now()
+    created_at = date.today()
     conn, cur = connect_db()
     cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
     # if url not exist url_data will get None so need except TypeError
@@ -94,12 +94,24 @@ def urls_post():
     return redirect(url_for('url', url_id=url_id))
 
 
-# @app.post('urls/<id>/checks')
-# def checks():
-#     conn, cur = connect_db()
-#     last_check = datetime.now()
-#     flash('Страница успешно проверена', 'success')
-#     return redirect(url_for('urls', last_check=last_check))
+@app.post('/urls/<id>/checks')
+def checks(id):
+    conn, cur = connect_db()
+    cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
+    url_data = cur.fetchone()
+    url_id = url_data['id']
+    check_created_at = date.today()
+    flash('Страница успешно проверена', 'success')
+    cur.execute('INSERT INTO url_checks (url_id, created_at) VALUES (%s, %s) \
+                     RETURNING id', (url_id, check_created_at))   
+    conn.commit()
+    check_url_data = cur.fetchone()
+    check_id = check_url_data['id']
+    return redirect(url_for('url',
+                            check_id=check_id,
+                            url_id=url_id,
+                            check_created_at=check_created_at
+                            ))
 
 
 @app.errorhandler(404)
