@@ -9,6 +9,7 @@ import os
 from datetime import date
 from urllib.parse import urlparse
 import validators
+import requests
 
 
 app = Flask(__name__)
