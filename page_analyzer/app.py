@@ -51,6 +51,8 @@ def url(url_id):
     conn, cur = connect_db()
     cur.execute("SELECT * FROM urls WHERE id = (%s)", (url_id, ))
     url_data = cur.fetchone()
+    cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
+    checks = cur.fetchall()
     cur.close()
     conn.close()
     return render_template(
@@ -58,7 +60,8 @@ def url(url_id):
         messages=messages,
         id=url_id,
         name=url_data['name'],
-        created_at=url_data['created_at']
+        created_at=url_data['created_at'],
+        checks=checks
     )
 
 
