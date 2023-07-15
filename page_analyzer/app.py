@@ -110,13 +110,15 @@ def checks(id):
     conn.commit()
     check_url_data = cur.fetchone()
     check_id = check_url_data['id']
-    cur.execute('UPDATE urls SET last_check = %s WHERE id = "id"', (check_created_at, ))
+    cur.execute('UPDATE urls SET last_check = %s \
+                WHERE id = "id"', (check_created_at, ))
     conn.commit()
-    return redirect(url_for('url',
-                            check_id=check_id,
-                            url_id=url_id,
-                            check_created_at=check_created_at
-                            ))
+    return redirect(url_for(
+        'url',
+        check_id=check_id,
+        url_id=url_id,
+        check_created_at=check_created_at
+        ))
 
 
 @app.errorhandler(404)
