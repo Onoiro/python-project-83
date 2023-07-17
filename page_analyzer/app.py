@@ -104,26 +104,35 @@ def checks(id):
     cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
     url_data = cur.fetchone()
     url_id = url_data['id']
-    r = requests.get(url_data['name'])
-    print(r.status_code)
-    status_code = r.status_code
-    check_created_at = date.today()
-    flash('Страница успешно проверена', 'success')
-    cur.execute('INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s, %s, %s) \
+    try:
+        r = requests.get(url_data['name'])
+        status_code = r.status_code
+        check_created_at = date.today()
+        flash('Страница успешно проверена', 'success')
+        cur.execute('INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s, %s, %s) \
                      RETURNING id', (url_id, status_code, check_created_at))
-    conn.commit()
-    check_url_data = cur.fetchone()
-    check_id = check_url_data['id']
-    cur.execute('UPDATE urls SET last_check = %s \
-                WHERE id = "id"', (check_created_at, ))
-    conn.commit()
+        conn.commit()
+        check_url_data = cur.fetchone()
+        check_id = check_url_data['id']
+        cur.execute('UPDATE urls SET last_check = %s \
+                    WHERE id = "id"', (check_created_at, ))
+        conn.commit()
+        return redirect(url_for(
+            'url',
+            check_id=check_id,
+            url_id=url_id,
+            status_code=status_code,
+            check_created_at=check_created_at
+            ))
+    except requests.exceptions.ConnectionError:
+        flash('Произошла ошибка при проверке', 'danger')
+    finally:
+        cur.close()
+        conn.close()
     return redirect(url_for(
-        'url',
-        check_id=check_id,
-        url_id=url_id,
-        status_code=status_code,
-        check_created_at=check_created_at
-        ))
+            'url',
+            url_id=url_id
+            ))
 
 
 @app.errorhandler(404)
