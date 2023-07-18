@@ -109,8 +109,9 @@ def checks(id):
         status_code = r.status_code
         check_created_at = date.today()
         flash('Страница успешно проверена', 'success')
-        cur.execute('INSERT INTO url_checks (url_id, status_code, created_at) VALUES (%s, %s, %s) \
-                     RETURNING id', (url_id, status_code, check_created_at))
+        cur.execute('INSERT INTO url_checks (url_id, status_code, created_at) \
+                    VALUES (%s, %s, %s) \
+                    RETURNING id', (url_id, status_code, check_created_at))
         conn.commit()
         check_url_data = cur.fetchone()
         check_id = check_url_data['id']
