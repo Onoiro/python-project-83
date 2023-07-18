@@ -2,7 +2,8 @@ CREATE TABLE urls (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     name VARCHAR(255) UNIQUE,
     created_at date NOT NULL,
-    last_check date
+    last_check date,
+    status_code integer
 );
 
 CREATE TABLE url_checks (
