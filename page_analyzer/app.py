@@ -114,8 +114,8 @@ def checks(id):
         conn.commit()
         check_url_data = cur.fetchone()
         check_id = check_url_data['id']
-        cur.execute('UPDATE urls SET last_check = %s \
-                    WHERE id = "id"', (check_created_at, ))
+        cur.execute('UPDATE urls SET last_check = %s, status_code = %s \
+                    WHERE id = "id"', (check_created_at, status_code))
         conn.commit()
         return redirect(url_for(
             'url',
