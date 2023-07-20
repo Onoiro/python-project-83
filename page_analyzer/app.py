@@ -10,6 +10,7 @@ from datetime import date
 from urllib.parse import urlparse
 import validators
 import requests
+from bs4 import BeautifulSoup
 
 
 app = Flask(__name__)
@@ -27,6 +28,14 @@ def connect_db():
     except psycopg2.OperationalError:
         print('Can`t establish connection to database')
     return conn, cur
+
+
+def get_url_data(id):
+    conn, cur = connect_db()
+    with conn.cursor(cursor_factory=DictCursor) as cur:
+        cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
+        url_data = cur.fetchone()
+    return url_data
 
 
 @app.get('/')
@@ -50,8 +59,7 @@ def urls():
 def url(url_id):
     messages = get_flashed_messages(with_categories=True)
     conn, cur = connect_db()
-    cur.execute("SELECT * FROM urls WHERE id = (%s)", (url_id, ))
-    url_data = cur.fetchone()
+    url_data = get_url_data(url_id)
     cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
     checks = cur.fetchall()
     cur.close()
@@ -101,8 +109,7 @@ def urls_post():
 @app.post('/urls/<id>/checks')
 def checks(id):
     conn, cur = connect_db()
-    cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
-    url_data = cur.fetchone()
+    url_data = get_url_data(id)
     url_id = url_data['id']
     try:
         r = requests.get(url_data['name'])
@@ -113,10 +120,12 @@ def checks(id):
                     VALUES (%s, %s, %s) \
                     RETURNING id', (url_id, status_code, check_created_at))
         conn.commit()
+        cur.execute('SELECT * FROM url_checks WHERE url_id = (%s)', (id, ))
         check_url_data = cur.fetchone()
+        print(check_url_data)
         check_id = check_url_data['id']
-        cur.execute('UPDATE urls SET last_check = %s, status_code = %s \
-                    WHERE id = "id"', (check_created_at, status_code))
+        cur.execute("UPDATE urls SET last_check = %s, status_code = %s WHERE id = %s", \
+                    (check_created_at, status_code, check_id))
         conn.commit()
         return redirect(url_for(
             'url',
