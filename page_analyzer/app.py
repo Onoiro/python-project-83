@@ -115,11 +115,14 @@ def checks(id):
         r = requests.get(url_data['name'])
         status_code = r.status_code
         check_created_at = date.today()
+        soup = BeautifulSoup(r.text, 'html.parser')
+        if soup.h1.string != None:
+            h1 = soup.h1.string
         flash('Страница успешно проверена', 'success')
-        cur.execute("INSERT INTO url_checks (url_id, status_code, created_at) \
-                    VALUES (%s, %s, %s) \
+        cur.execute("INSERT INTO url_checks (url_id, status_code, h1, created_at) \
+                    VALUES (%s, %s, %s, %s) \
                     RETURNING id, status_code, created_at",
-                    (url_id, status_code, check_created_at))
+                    (url_id, status_code, h1, check_created_at))
         conn.commit()
         cur.execute("UPDATE urls \
                     SET last_check = %s, status_code = %s WHERE id = %s",
@@ -129,6 +132,7 @@ def checks(id):
             'url',
             check_id=id,
             url_id=url_id,
+            h1=h1,
             status_code=status_code,
             check_created_at=check_created_at
             ))
