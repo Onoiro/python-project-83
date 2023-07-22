@@ -118,18 +118,18 @@ def checks(id):
         flash('Страница успешно проверена', 'success')
         cur.execute('INSERT INTO url_checks (url_id, status_code, created_at) \
                     VALUES (%s, %s, %s) \
-                    RETURNING id', (url_id, status_code, check_created_at))
+                    RETURNING id, status_code, created_at', (url_id, status_code, check_created_at))
         conn.commit()
-        cur.execute('SELECT * FROM url_checks WHERE url_id = (%s)', (id, ))
-        check_url_data = cur.fetchone()
-        print(check_url_data)
-        check_id = check_url_data['id']
+        # cur.execute('SELECT * FROM url_checks WHERE url_id = (%s)', (id, ))
+        # check_url_data = cur.fetchone()
+        # print(check_url_data)
+        # check_id = check_url_data['id']
         cur.execute("UPDATE urls SET last_check = %s, status_code = %s WHERE id = %s", \
-                    (check_created_at, status_code, check_id))
+                    (check_created_at, status_code, id))
         conn.commit()
         return redirect(url_for(
             'url',
-            check_id=check_id,
+            check_id=id,
             url_id=url_id,
             status_code=status_code,
             check_created_at=check_created_at
