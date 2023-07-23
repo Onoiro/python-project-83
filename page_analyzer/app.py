@@ -117,13 +117,10 @@ def checks(id):
         check_created_at = date.today()
         soup = BeautifulSoup(r.text, 'html.parser')
         h1 = soup.h1
-        # if h1 is None:
-        #     h1 = ''
-        # else:
-        #     h1 = soup.h1.string
         h1 = soup.h1.string if h1 else ''
         flash('Страница успешно проверена', 'success')
-        cur.execute("INSERT INTO url_checks (url_id, status_code, h1, created_at) \
+        cur.execute("INSERT INTO url_checks \
+                    (url_id, status_code, h1, created_at) \
                     VALUES (%s, %s, %s, %s) \
                     RETURNING id, status_code, created_at",
                     (url_id, status_code, h1, check_created_at))
