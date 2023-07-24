@@ -118,12 +118,14 @@ def checks(id):
         soup = BeautifulSoup(r.text, 'html.parser')
         h1 = soup.h1
         h1 = soup.h1.string if h1 else ''
+        title = soup.title
+        title = soup.title.string if title else ''
         flash('Страница успешно проверена', 'success')
         cur.execute("INSERT INTO url_checks \
-                    (url_id, status_code, h1, created_at) \
-                    VALUES (%s, %s, %s, %s) \
+                    (url_id, status_code, h1, title, created_at) \
+                    VALUES (%s, %s, %s, %s, %s) \
                     RETURNING id, status_code, created_at",
-                    (url_id, status_code, h1, check_created_at))
+                    (url_id, status_code, h1, title, check_created_at))
         conn.commit()
         cur.execute("UPDATE urls \
                     SET last_check = %s, status_code = %s WHERE id = %s",
@@ -135,6 +137,7 @@ def checks(id):
             url_id=url_id,
             h1=h1,
             status_code=status_code,
+            title=title,
             check_created_at=check_created_at
             ))
     except requests.exceptions.ConnectionError:
