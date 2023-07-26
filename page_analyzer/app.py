@@ -130,7 +130,7 @@ def checks(id):
                     (url_id, status_code, h1, title, description, created_at) \
                     VALUES (%s, %s, %s, %s, %s, %s) \
                     RETURNING id, status_code, created_at",
-                    (url_id, status_code, h1,\
+                    (url_id, status_code, h1,
                      title, description, check_created_at))
         conn.commit()
         cur.execute("UPDATE urls \
