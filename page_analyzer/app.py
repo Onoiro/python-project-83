@@ -107,10 +107,6 @@ def urls_post():
     return redirect(url_for('url', url_id=url_id))
 
 
-# def has_meta_and_content(tag):
-#     return tag.has_attr('meta') and tag.has_attr('name')
-
-
 @app.post('/urls/<id>/checks')
 def checks(id):
     conn, cur = connect_db()
@@ -126,16 +122,16 @@ def checks(id):
         title = soup.title
         title = soup.title.string if title else ''
         description = str(soup.find(attrs={"name": "description"}))
-        print(description)
-        pattern = r'".+?"'
+        pattern = r'"(.+?)"'
         description = re.search(pattern, description)
-        description = description.group(0)
+        description = description.group(1)
         flash('Страница успешно проверена', 'success')
         cur.execute("INSERT INTO url_checks \
                     (url_id, status_code, h1, title, description, created_at) \
                     VALUES (%s, %s, %s, %s, %s, %s) \
                     RETURNING id, status_code, created_at",
-                    (url_id, status_code, h1, title, description, check_created_at))
+                    (url_id, status_code, h1,\
+                     title, description, check_created_at))
         conn.commit()
         cur.execute("UPDATE urls \
                     SET last_check = %s, status_code = %s WHERE id = %s",
