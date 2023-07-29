@@ -124,7 +124,7 @@ def checks(id):
         description = str(soup.find(attrs={"name": "description"}))
         pattern = r'"(.+?)"'
         description = re.search(pattern, description)
-        description = description.group(1)
+        description = description.group(1) if description else ''
         flash('Страница успешно проверена', 'success')
         cur.execute("INSERT INTO url_checks \
                     (url_id, status_code, h1, title, description, created_at) \
