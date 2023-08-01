@@ -16,7 +16,7 @@ start:
 
 lint:
 	poetry run flake8 page_analyzer/app.py
-
+	
 
 package-install:
 	python3 -m pip install --force-reinstall --user dist/*.whl
