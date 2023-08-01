@@ -82,7 +82,7 @@ def urls_post():
         return redirect(url_for('index'))
     if not validators.url(input):
         flash('Некорректный URL', 'danger')
-        return redirect(url_for('index'))
+        return render_template('index.html'), 422
     url_parts = urlparse(input)
     url = f"{url_parts.scheme}://{url_parts.netloc}"
     created_at = date.today()
