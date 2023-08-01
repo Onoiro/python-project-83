@@ -1,2 +1,2 @@
-__all__ = ['Flask']
-from page_analyzer.app import Flask
+__all__ = ['app']
+from page_analyzer.app import app
