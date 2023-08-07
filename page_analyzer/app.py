@@ -61,7 +61,7 @@ def url(url_id):
     conn, cur = connect_db()
     url_data = get_url_data(url_id)
     cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
-    checks = cur.fetchall()
+    checks = reversed(cur.fetchall())
     cur.close()
     conn.close()
     return render_template(
