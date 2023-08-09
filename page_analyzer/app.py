@@ -147,7 +147,7 @@ def checks(id):
             title=title,
             check_created_at=check_created_at
             ))
-    except requests.exceptions.ConnectionError:
+    except requests.exceptions.RequestException:
         flash('Произошла ошибка при проверке', 'danger')
     finally:
         cur.close()
