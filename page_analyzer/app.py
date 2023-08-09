@@ -111,51 +111,49 @@ def checks(id):
     conn, cur = connect_db()
     url_data = get_url_data(id)
     url_id = url_data['id']
+    
     try:
         r = requests.get(url_data['name'])
-        status_code = r.status_code
-        check_created_at = date.today()
-        soup = BeautifulSoup(r.text, 'html.parser')
-        h1 = soup.h1
-        h1 = soup.h1.string if h1 else ''
-        title = soup.title
-        title = soup.title.string if title else ''
-        description = str(soup.find(attrs={"name": "description"}))
-        pattern = r'"(.+?)"'
-        description = re.search(pattern, description)
-        description = description.group(1) if description else ''
-        flash('Страница успешно проверена', 'success')
-        cur.execute("INSERT INTO url_checks \
-                    (url_id, status_code, h1, title, description, created_at) \
-                    VALUES (%s, %s, %s, %s, %s, %s) \
-                    RETURNING id, status_code, created_at",
-                    (url_id, status_code, h1,
-                     title, description, check_created_at))
-        conn.commit()
-        cur.execute("UPDATE urls \
-                    SET last_check = %s, status_code = %s WHERE id = %s",
-                    (check_created_at, status_code, id))
-        conn.commit()
-        cur.close()
-        conn.close()
-        return redirect(url_for(
-            'url',
-            check_id=id,
-            url_id=url_id,
-            h1=h1,
-            status_code=status_code,
-            title=title,
-            check_created_at=check_created_at
-            ))
+        if not r.status_code // 100 == 2:
+            status_code = r.status_code
+            check_created_at = date.today()
+            soup = BeautifulSoup(r.text, 'html.parser')
+            h1 = soup.h1
+            h1 = soup.h1.string if h1 else ''
+            title = soup.title
+            title = soup.title.string if title else ''
+            description = str(soup.find(attrs={"name": "description"}))
+            pattern = r'"(.+?)"'
+            description = re.search(pattern, description)
+            description = description.group(1) if description else ''
+            flash('Страница успешно проверена', 'success')
+            cur.execute("INSERT INTO url_checks \
+                        (url_id, status_code, h1, title, description, created_at) \
+                        VALUES (%s, %s, %s, %s, %s, %s) \
+                        RETURNING id, status_code, created_at",
+                        (url_id, status_code, h1,
+                            title, description, check_created_at))
+            conn.commit()
+            cur.execute("UPDATE urls \
+                        SET last_check = %s, status_code = %s WHERE id = %s",
+                        (check_created_at, status_code, id))
+            conn.commit()
+            cur.close()
+            conn.close()
+            return redirect(url_for(
+                'url',
+                check_id=id,
+                url_id=url_id,
+                h1=h1,
+                status_code=status_code,
+                title=title,
+                check_created_at=check_created_at
+                ))
     except requests.exceptions.RequestException:
         flash('Произошла ошибка при проверке', 'danger')
-    finally:
-        cur.close()
-        conn.close()
-    return redirect(url_for(
-            'url',
-            url_id=url_id
-            ))
+        return redirect(url_for(
+            'url', url_id=url_id), 302)
+    
 
 
 @app.errorhandler(404)
