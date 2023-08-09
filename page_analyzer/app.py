@@ -111,7 +111,6 @@ def checks(id):
     conn, cur = connect_db()
     url_data = get_url_data(id)
     url_id = url_data['id']
-    
     try:
         r = requests.get(url_data['name'])
         if not r.status_code // 100 == 2:
