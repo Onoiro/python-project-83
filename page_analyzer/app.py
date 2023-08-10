@@ -137,8 +137,7 @@ def checks(id):
                         SET last_check = %s, status_code = %s WHERE id = %s",
                         (check_created_at, status_code, id))
             conn.commit()
-            cur.close()
-            conn.close()
+            print(status_code)
             return redirect(url_for(
                 'url',
                 check_id=id,
@@ -152,7 +151,9 @@ def checks(id):
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for(
             'url', url_id=url_id), 302)
-    
+    finally:
+        cur.close()
+        conn.close()
 
 
 @app.errorhandler(404)
