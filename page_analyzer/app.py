@@ -113,7 +113,7 @@ def checks(id):
     url_id = url_data['id']
     try:
         r = requests.get(url_data['name'])
-        if not r.status_code // 100 == 2:
+        if r.status_code == 200:
             status_code = r.status_code
             check_created_at = date.today()
             soup = BeautifulSoup(r.text, 'html.parser')
