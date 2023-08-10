@@ -74,7 +74,7 @@ def url(url_id):
     )
 
 
-@app.post('/urls/')
+@app.post('/urls')
 def urls_post():
     input = request.form.get('url')
     if len(input) > 255:
