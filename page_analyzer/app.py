@@ -137,7 +137,7 @@ def checks(id):
                         SET last_check = %s, status_code = %s WHERE id = %s",
                         (check_created_at, status_code, id))
             conn.commit()
-            print(status_code)
+            print(status_code, h1, title, description, check_created_at)
             return redirect(url_for(
                 'url',
                 check_id=id,
