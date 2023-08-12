@@ -147,10 +147,12 @@ def checks(id):
                 title=title,
                 check_created_at=check_created_at
                 ))
+        else:
+            flash('Произошла ошибка при проверке', 'danger')
+            return redirect(url_for('url', url_id=url_id), 302)
     except requests.exceptions.RequestException:
         flash('Произошла ошибка при проверке', 'danger')
-        return redirect(url_for(
-            'url', url_id=url_id), 302)
+        return redirect(url_for('url', url_id=url_id), 302)
     finally:
         cur.close()
         conn.close()
