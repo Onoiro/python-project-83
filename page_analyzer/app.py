@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from flask import Flask, request, render_template, \
-                  redirect, url_for, flash, get_flashed_messages
+                redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
 import psycopg2
 from psycopg2.extras import DictCursor
@@ -147,7 +147,7 @@ def checks(id):
                 status_code=status_code,
                 title=title,
                 check_created_at=check_created_at
-                ))
+            ))
         else:
             flash('Произошла ошибка при проверке', 'danger')
             return redirect(url_for('url', url_id=url_id), 302)
