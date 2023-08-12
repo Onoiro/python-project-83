@@ -8,19 +8,17 @@ Use this application for a minimal SEO analysis of a website.
 Click [https://page-analyzer-tdcb.onrender.com/](https://page-analyzer-tdcb.onrender.com/) to get Page-analyzer
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
-### Install for personal use
+## Install for personal use
 ```bash
 git clone git@github.com:Onoiro/python-project-83.git
-```
-```bash
 cd python-project-83
-```
-```bash
+# # build app & connect to database:
+# poetry install && psql -a -d $DATABASE_URL -f database.sql
 make build
-```
-```bash
+# # run in development mode:
+# poetry run flask --app page_analyzer/app --debug run
 make dev
-```
-```bash
+# # run in production:
+# poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app (PORT ?= 8000)
 make start
 ```
