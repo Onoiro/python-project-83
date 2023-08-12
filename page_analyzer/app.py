@@ -113,7 +113,7 @@ def checks(id):
     url_id = url_data['id']
     try:
         r = requests.get(url_data['name'])
-        if r.status_code == 200 or r.status_code == None:
+        if r.status_code == 200:
             status_code = r.status_code
             check_created_at = date.today()
             soup = BeautifulSoup(r.text, 'html.parser')
@@ -127,7 +127,8 @@ def checks(id):
             description = description.group(1) if description else ''
             flash('Страница успешно проверена', 'success')
             cur.execute("INSERT INTO url_checks \
-                        (url_id, status_code, h1, title, description, created_at) \
+                        (url_id, status_code, h1, title, \
+                        description, created_at) \
                         VALUES (%s, %s, %s, %s, %s, %s) \
                         RETURNING id, status_code, created_at",
                         (url_id, status_code, h1,
