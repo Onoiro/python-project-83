@@ -4,22 +4,23 @@
 
 ## Welcome to [Page-analyzer](https://page-analyzer-tdcb.onrender.com/)
 Use this application for a minimal SEO analysis of a website.
+
 Click [https://page-analyzer-tdcb.onrender.com/](https://page-analyzer-tdcb.onrender.com/) to get Page-analyzer
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
 ### Install for personal use
-'''bash
+```bash
 git clone git@github.com:Onoiro/python-project-83.git
-'''
-'''bash
+```
+```bash
 cd python-project-83
-'''
-'''bash
+```
+```bash
 make build
-'''
-'''bash
+```
+```bash
 make dev
-'''
-'''bash
+```
+```bash
 make start
-'''
+```
