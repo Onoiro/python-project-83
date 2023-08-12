@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from flask import Flask, render_template, \
+from flask import Flask, request, render_template, \
                          redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
 import psycopg2
