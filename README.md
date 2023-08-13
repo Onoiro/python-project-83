@@ -32,7 +32,7 @@ make dev
 make start
 ```
 ## Requirements
-OS Linux
-python = "^3.8.1"
-poetry = "^1.2.2"
+OS Linux  
+python = "^3.8.1"  
+poetry = "^1.2.2"  
 postgres = "^12.15"
