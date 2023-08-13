@@ -9,14 +9,25 @@ Click [https://page-analyzer-tdcb.onrender.com/](https://page-analyzer-tdcb.onre
 
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
-## Install for personal use
+## Install for personal local use
 ```bash
 git clone git@github.com:Onoiro/python-project-83.git
 cd python-project-83
+
 # build app & connect to database: poetry install && psql -a -d $DATABASE_URL -f database.sql
 make build
+
+# create special .env file, that contains environment variables
+touch .env
+nano .env
+
+# specify environment variables, for example:
+DATABASE_URL=postgresql://user:password@connect_url/database
+SECRET_KEY="secret_key"
+
 # run in development mode: poetry run flask --app page_analyzer/app --debug run
 make dev
+
 # run production: poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app (PORT ?= 8000)
 make start
 ```
