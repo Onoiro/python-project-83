@@ -31,3 +31,8 @@ make dev
 # run production: poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app (PORT ?= 8000)
 make start
 ```
+## Requirements
+OS Linux
+python = "^3.8.1"
+poetry = "^1.2.2"
+postgres = "^12.15"
