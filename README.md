@@ -14,10 +14,11 @@ Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\>
 git clone git@github.com:Onoiro/python-project-83.git
 cd python-project-83
 
-# build app & connect to database: poetry install && psql -a -d $DATABASE_URL -f database.sql
+# build app & connect to database:
+# poetry install && psql -a -d $DATABASE_URL -f database.sql
 make build
 
-# create special .env file, that contains environment variables
+# create .env file contains environment variables
 touch .env
 nano .env
 
@@ -25,10 +26,13 @@ nano .env
 DATABASE_URL=postgresql://user:password@connect_url/database
 SECRET_KEY="secret_key"
 
-# run in development mode: poetry run flask --app page_analyzer/app --debug run
+# run in development mode:
+# poetry run flask --app page_analyzer/app --debug run
 make dev
 
-# run production: poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app (PORT ?= 8000)
+# run production:
+# (PORT ?= 8000)
+# poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app
 make start
 ```
 ## Requirements
