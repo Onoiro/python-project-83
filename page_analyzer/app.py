@@ -113,43 +113,40 @@ def checks(id):
     url_id = url_data['id']
     try:
         r = requests.get(url_data['name'])
-        if r.status_code == 200:
-            status_code = r.status_code
-            check_created_at = date.today()
-            soup = BeautifulSoup(r.text, 'html.parser')
-            h1 = soup.h1
-            h1 = soup.h1.string if h1 else ''
-            title = soup.title
-            title = soup.title.string if title else ''
-            description = str(soup.find(attrs={"name": "description"}))
-            pattern = r'"(.+?)"'
-            description = re.search(pattern, description)
-            description = description.group(1) if description else ''
-            flash('Страница успешно проверена', 'success')
-            cur.execute("INSERT INTO url_checks \
-                        (url_id, status_code, h1, title, \
-                        description, created_at) \
-                        VALUES (%s, %s, %s, %s, %s, %s) \
-                        RETURNING id, status_code, created_at",
-                        (url_id, status_code, h1,
-                            title, description, check_created_at))
-            conn.commit()
-            cur.execute("UPDATE urls \
-                        SET last_check = %s, status_code = %s WHERE id = %s",
-                        (check_created_at, status_code, id))
-            conn.commit()
-            return redirect(url_for(
-                'url',
-                check_id=id,
-                url_id=url_id,
-                h1=h1,
-                status_code=status_code,
-                title=title,
-                check_created_at=check_created_at
-            ))
-        else:
-            flash('Произошла ошибка при проверке', 'danger')
-            return redirect(url_for('url', url_id=url_id), 302)
+        r.raise_for_status()
+        status_code = r.status_code
+        check_created_at = date.today()
+        soup = BeautifulSoup(r.text, 'html.parser')
+        h1 = soup.h1
+        h1 = soup.h1.string if h1 else ''
+        title = soup.title
+        title = soup.title.string if title else ''
+        description = str(soup.find(attrs={"name": "description"}))
+        pattern = r'"(.+?)"'
+        description = re.search(pattern, description)
+        description = description.group(1) if description else ''
+        flash('Страница успешно проверена', 'success')
+        cur.execute("INSERT INTO url_checks \
+                    (url_id, status_code, h1, title, \
+                    description, created_at) \
+                    VALUES (%s, %s, %s, %s, %s, %s) \
+                    RETURNING id, status_code, created_at",
+                    (url_id, status_code, h1,
+                        title, description, check_created_at))
+        conn.commit()
+        cur.execute("UPDATE urls \
+                    SET last_check = %s, status_code = %s WHERE id = %s",
+                    (check_created_at, status_code, id))
+        conn.commit()
+        return redirect(url_for(
+            'url',
+            check_id=id,
+            url_id=url_id,
+            h1=h1,
+            status_code=status_code,
+            title=title,
+            check_created_at=check_created_at
+        ))
     except requests.exceptions.RequestException:
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('url', url_id=url_id), 302)
