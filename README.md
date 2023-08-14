@@ -22,7 +22,7 @@ make build
 touch .env
 nano .env
 
-# specify environment variables, for example:
+# specify environment variables in .env, for example:
 DATABASE_URL=postgresql://user:password@connect_url/database
 SECRET_KEY="secret_key"
 
@@ -36,7 +36,7 @@ make dev
 make start
 ```
 ## Requirements
-OS Linux  
-python = "^3.8.1"  
-poetry = "^1.2.2"  
-postgres = "^12.15"
+* OS Linux  
+* python = "^3.8.1"  
+* poetry = "^1.2.2"  
+* postgres = "^12.15"
