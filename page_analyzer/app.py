@@ -12,6 +12,7 @@ import validators
 import requests
 from bs4 import BeautifulSoup
 import re
+from .db import connect_db, get_url_data
 
 
 app = Flask(__name__)
@@ -21,21 +22,21 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
-def connect_db():
-    try:
-        conn = psycopg2.connect(DATABASE_URL)
-        cur = conn.cursor(cursor_factory=DictCursor)
-    except psycopg2.OperationalError:
-        print('Can`t establish connection to database')
-    return conn, cur
+# def connect_db():
+#     try:
+#         conn = psycopg2.connect(DATABASE_URL)
+#         cur = conn.cursor(cursor_factory=DictCursor)
+#     except psycopg2.OperationalError:
+#         print('Can`t establish connection to database')
+#     return conn, cur
 
 
-def get_url_data(id):
-    conn, cur = connect_db()
-    with conn.cursor(cursor_factory=DictCursor) as cur:
-        cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
-        url_data = cur.fetchone()
-    return url_data
+# def get_url_data(id):
+#     conn, cur = connect_db()
+#     with conn.cursor(cursor_factory=DictCursor) as cur:
+#         cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
+#         url_data = cur.fetchone()
+#     return url_data
 
 
 @app.get('/')
