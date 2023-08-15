@@ -11,7 +11,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from .db import connect_db, get_url_data, get_all_urls, \
-     get_url_checks, get_url_by_name, add_url
+    get_url_checks, get_url_by_name, add_url
 
 
 app = Flask(__name__)
