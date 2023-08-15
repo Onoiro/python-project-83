@@ -16,27 +16,32 @@ def connect_db():
     return conn, cur
 
 
-def get_url_data(id):
-    conn, cur = connect_db()
-    with conn.cursor(cursor_factory=DictCursor) as cur:
-        cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
-        url_data = cur.fetchone()
-    return url_data
+def close_db(conn, cur):
+    conn.close()
+    cur.close()
 
 
 def get_all_urls():
     conn, cur = connect_db()
-    with conn.cursor(cursor_factory=DictCursor) as cur:
-        cur.execute("SELECT * FROM urls")
-        urls = cur.fetchall()
+    cur.execute("SELECT * FROM urls")
+    urls = cur.fetchall()
+    close_db(conn, cur)
     return urls
+
+
+def get_url_data(id):
+    conn, cur = connect_db()
+    cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
+    url_data = cur.fetchone()
+    close_db(conn, cur)
+    return url_data
 
 
 def get_url_checks(url_id):
     conn, cur = connect_db()
-    with conn.cursor(cursor_factory=DictCursor) as cur:
-        cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
-        checks = cur.fetchall()
+    cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
+    checks = cur.fetchall()
+    close_db(conn, cur)
     return checks
 
 
