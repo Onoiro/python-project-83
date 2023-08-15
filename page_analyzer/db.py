@@ -79,4 +79,3 @@ def get_url_data(id):
 #                 (check_created_at, status_code, id))
 #     conn.commit()
 #     pass
-

@@ -3,7 +3,6 @@
 from flask import Flask, request, render_template, \
     redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
-import psycopg2
 from psycopg2.extras import DictCursor
 import os
 from datetime import date
@@ -20,23 +19,6 @@ app = Flask(__name__)
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-
-
-# def connect_db():
-#     try:
-#         conn = psycopg2.connect(DATABASE_URL)
-#         cur = conn.cursor(cursor_factory=DictCursor)
-#     except psycopg2.OperationalError:
-#         print('Can`t establish connection to database')
-#     return conn, cur
-
-
-# def get_url_data(id):
-#     conn, cur = connect_db()
-#     with conn.cursor(cursor_factory=DictCursor) as cur:
-#         cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
-#         url_data = cur.fetchone()
-#     return url_data
 
 
 @app.get('/')
