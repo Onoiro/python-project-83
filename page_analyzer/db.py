@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2.extras import DictCursor
 from dotenv import load_dotenv
+from datetime import date
 import os
 
 load_dotenv()
@@ -44,6 +45,24 @@ def get_url_checks(url_id):
     close_db(conn, cur)
     return checks
 
+
+def get_url_by_name(url):
+    conn, cur = connect_db()
+    cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
+    url_data = cur.fetchone()
+    close_db(conn, cur)
+    return url_data
+
+
+def add_url(url):
+    conn, cur = connect_db()
+    created_at = date.today()
+    cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
+                     RETURNING id', (url, created_at))
+    conn.commit()
+    url_data = cur.fetchone()
+    close_db(conn, cur)
+    return url_data
 
 # def add_url(url):
 #     message = 'Страница уже существует'

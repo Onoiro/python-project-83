@@ -10,7 +10,8 @@ import validators
 import requests
 from bs4 import BeautifulSoup
 import re
-from .db import connect_db, get_url_data, get_all_urls, get_url_checks
+from .db import connect_db, get_url_data, get_all_urls, \
+     get_url_checks, get_url_by_name, add_url
 
 
 app = Flask(__name__)
@@ -60,24 +61,16 @@ def urls_post():
         return render_template('index.html'), 422
     url_parts = urlparse(input)
     url = f"{url_parts.scheme}://{url_parts.netloc}"
-    created_at = date.today()
-    conn, cur = connect_db()
-    cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
     # if url not exist url_data will get None so need except TypeError
-    url_data = cur.fetchone()
+    url_data = get_url_by_name(url)
     try:
         url_id = url_data['id']
         flash('Страница уже существует', 'info')
-    except TypeError:  # if URL not exist
-        cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
-                     RETURNING id', (url, created_at))
-        conn.commit()
-        url_data = cur.fetchone()
+    # if URL not exist
+    except TypeError:
+        url_data = add_url(url)
         url_id = url_data['id']
         flash('Страница успешно добавлена', 'success')
-    finally:
-        cur.close()
-        conn.close()
     return redirect(url_for('url', url_id=url_id))
 
 
