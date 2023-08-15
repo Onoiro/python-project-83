@@ -10,7 +10,7 @@ import validators
 import requests
 from bs4 import BeautifulSoup
 import re
-from .db import connect_db, get_url_data, get_all_urls
+from .db import connect_db, get_url_data, get_all_urls, get_url_checks
 
 
 app = Flask(__name__)
@@ -37,12 +37,8 @@ def urls():
 @app.get('/urls/<url_id>')
 def url(url_id):
     messages = get_flashed_messages(with_categories=True)
-    conn, cur = connect_db()
     url_data = get_url_data(url_id)
-    cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
-    checks = reversed(cur.fetchall())
-    cur.close()
-    conn.close()
+    checks = reversed(get_url_checks(url_id))
     return render_template(
         'url.html',
         messages=messages,

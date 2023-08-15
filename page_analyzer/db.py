@@ -32,14 +32,12 @@ def get_all_urls():
     return urls
 
 
-# def get_url_checks(url_id):
-#     conn, cur = connect_db()
-#     url_data = get_url_data(url_id)
-#     cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
-#     checks = cur.fetchall()
-#     cur.close()
-#     conn.close()
-#     return checks
+def get_url_checks(url_id):
+    conn, cur = connect_db()
+    with conn.cursor(cursor_factory=DictCursor) as cur:
+        cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
+        checks = cur.fetchall()
+    return checks
 
 
 # def add_url(url):
