@@ -3,7 +3,6 @@
 from flask import Flask, request, render_template, \
     redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
-from psycopg2.extras import DictCursor
 import os
 from datetime import date
 from urllib.parse import urlparse
@@ -28,10 +27,6 @@ def index():
 
 @app.get('/urls/')
 def urls():
-    # conn, cur = connect_db()
-    # with conn.cursor(cursor_factory=DictCursor) as cur:
-    #     cur.execute("SELECT * FROM urls")
-
     urls = reversed(get_all_urls())
     return render_template(
         'urls.html',
