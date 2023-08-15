@@ -11,7 +11,7 @@ import validators
 import requests
 from bs4 import BeautifulSoup
 import re
-from .db import connect_db, get_url_data
+from .db import connect_db, get_url_data, get_all_urls
 
 
 app = Flask(__name__)
@@ -28,10 +28,11 @@ def index():
 
 @app.get('/urls/')
 def urls():
-    conn, cur = connect_db()
-    with conn.cursor(cursor_factory=DictCursor) as cur:
-        cur.execute("SELECT * FROM urls")
-        urls = reversed(cur.fetchall())
+    # conn, cur = connect_db()
+    # with conn.cursor(cursor_factory=DictCursor) as cur:
+    #     cur.execute("SELECT * FROM urls")
+
+    urls = reversed(get_all_urls())
     return render_template(
         'urls.html',
         urls=urls

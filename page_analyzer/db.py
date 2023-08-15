@@ -24,12 +24,12 @@ def get_url_data(id):
     return url_data
 
 
-# def get_all_urls():
-#     conn, cur = connect_db()
-#     with conn.cursor(cursor_factory=DictCursor) as cur:
-#         cur.execute("SELECT * FROM urls")
-#         urls = cur.fetchall()
-#     return urls
+def get_all_urls():
+    conn, cur = connect_db()
+    with conn.cursor(cursor_factory=DictCursor) as cur:
+        cur.execute("SELECT * FROM urls")
+        urls = cur.fetchall()
+    return urls
 
 
 # def get_url_checks(url_id):
