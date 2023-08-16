@@ -1,7 +1,6 @@
 import psycopg2
 from psycopg2.extras import DictCursor
 from dotenv import load_dotenv
-from datetime import date
 import os
 
 load_dotenv()
@@ -54,9 +53,8 @@ def get_url_by_name(url):
     return url_data
 
 
-def add_url(url):
+def add_url(url, created_at):
     conn, cur = connect_db()
-    created_at = date.today()
     cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
                      RETURNING id', (url, created_at))
     conn.commit()
@@ -64,40 +62,23 @@ def add_url(url):
     close_db(conn, cur)
     return url_data
 
-# def add_url(url):
-#     message = 'Страница уже существует'
-#     category = 'info'
-#     conn, cur = connect_db()
-#     cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
-#     # if url not exist url_data will get None so need except TypeError
-#     url_data = cur.fetchone()
-#     try:
-#         url_id = url_data['id']
-#     except TypeError:  # if URL not exist
-#         cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
-#                      RETURNING id', (url, created_at))
-#         conn.commit()
-#         url_data = cur.fetchone()
-#         url_id = url_data['id']
-#         message = 'Страница успешно добавлена'
-#         category = 'success'
-#     return message, category
 
-
-# def add_url_check():
-#     conn, cur = connect_db()
-#     url_data = get_url_data(id)
-#     url_id = url_data['id']
-#     cur.execute("INSERT INTO url_checks \
-#                 (url_id, status_code, h1, title, \
-#                 description, created_at) \
-#                 VALUES (%s, %s, %s, %s, %s, %s) \
-#                 RETURNING id, status_code, created_at",
-#                 (url_id, status_code, h1,
-#                 title, description, check_created_at))
-#     conn.commit()
-#     cur.execute("UPDATE urls \
-#                 SET last_check = %s, status_code = %s WHERE id = %s",
-#                 (check_created_at, status_code, id))
-#     conn.commit()
-#     pass
+def add_url_check(id, status_code, h1, title,
+                  description, check_created_at):
+    conn, cur = connect_db()
+    url_data = get_url_data(id)
+    url_id = url_data['id']
+    cur.execute("INSERT INTO url_checks \
+                (url_id, status_code, h1, title, \
+                description, created_at) \
+                VALUES (%s, %s, %s, %s, %s, %s) \
+                RETURNING id, status_code, created_at",
+                (url_id, status_code, h1,
+                 title, description, check_created_at))
+    conn.commit()
+    cur.execute("UPDATE urls \
+                SET last_check = %s, status_code = %s WHERE id = %s",
+                (check_created_at, status_code, id))
+    conn.commit()
+    close_db(conn, cur)
+    return None
