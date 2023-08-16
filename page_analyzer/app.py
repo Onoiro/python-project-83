@@ -10,14 +10,13 @@ import validators
 import requests
 from bs4 import BeautifulSoup
 import re
-from .db import connect_db, get_url_data, get_all_urls, \
-    get_url_checks, get_url_by_name, add_url
+from .db import get_url_data, get_all_urls, \
+    get_url_checks, get_url_by_name, add_url, add_url_check
 
 
 app = Flask(__name__)
 
 load_dotenv()
-DATABASE_URL = os.getenv('DATABASE_URL')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
@@ -68,7 +67,8 @@ def urls_post():
         flash('Страница уже существует', 'info')
     # if URL not exist
     except TypeError:
-        url_data = add_url(url)
+        created_at = date.today()
+        url_data = add_url(url, created_at)
         url_id = url_data['id']
         flash('Страница успешно добавлена', 'success')
     return redirect(url_for('url', url_id=url_id))
@@ -76,7 +76,6 @@ def urls_post():
 
 @app.post('/urls/<id>/checks')
 def checks(id):
-    conn, cur = connect_db()
     url_data = get_url_data(id)
     url_id = url_data['id']
     try:
@@ -94,18 +93,8 @@ def checks(id):
         description = re.search(pattern, description)
         description = description.group(1) if description else ''
         flash('Страница успешно проверена', 'success')
-        cur.execute("INSERT INTO url_checks \
-                    (url_id, status_code, h1, title, \
-                    description, created_at) \
-                    VALUES (%s, %s, %s, %s, %s, %s) \
-                    RETURNING id, status_code, created_at",
-                    (url_id, status_code, h1,
-                        title, description, check_created_at))
-        conn.commit()
-        cur.execute("UPDATE urls \
-                    SET last_check = %s, status_code = %s WHERE id = %s",
-                    (check_created_at, status_code, id))
-        conn.commit()
+        add_url_check(id, status_code, h1, title,
+                      description, check_created_at)
         return redirect(url_for(
             'url',
             check_id=id,
@@ -118,9 +107,6 @@ def checks(id):
     except requests.exceptions.RequestException:
         flash('Произошла ошибка при проверке', 'danger')
         return redirect(url_for('url', url_id=url_id), 302)
-    finally:
-        cur.close()
-        conn.close()
 
 
 @app.errorhandler(404)
