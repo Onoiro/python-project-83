@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 import re
 from .db import get_url_data, get_all_urls, \
     get_url_checks, get_url_by_name, add_url, add_url_check
+from .urls import get_correct_url
 
 
 app = Flask(__name__)
@@ -38,13 +39,15 @@ def urls():
 def url(url_id):
     messages = get_flashed_messages(with_categories=True)
     url_data = get_url_data(url_id)
+    name = url_data['name']
+    created_at = url_data['created_at']
     checks = reversed(get_url_checks(url_id))
     return render_template(
         'url.html',
         messages=messages,
         id=url_id,
-        name=url_data['name'],
-        created_at=url_data['created_at'],
+        name=name,
+        created_at=created_at,
         checks=checks
     )
 
@@ -52,26 +55,23 @@ def url(url_id):
 @app.post('/urls')
 def urls_post():
     input = request.form.get('url')
-    if len(input) > 255:
-        flash('URL превышает 255 символов', 'danger')
+    url, message, category = get_correct_url(input)
+    if url is False:
+        flash(message, category)
         return redirect(url_for('index'))
-    if not validators.url(input):
-        flash('Некорректный URL', 'danger')
-        return render_template('index.html'), 422
-    url_parts = urlparse(input)
-    url = f"{url_parts.scheme}://{url_parts.netloc}"
-    # if url not exist url_data will get None so need except TypeError
-    url_data = get_url_by_name(url)
-    try:
-        url_id = url_data['id']
-        flash('Страница уже существует', 'info')
-    # if URL not exist
-    except TypeError:
-        created_at = date.today()
-        url_data = add_url(url, created_at)
-        url_id = url_data['id']
-        flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('url', url_id=url_id))
+    # url_data = get_url_by_name(url)
+    # try:
+    #     url_id = url_data['id']
+    #     flash('Страница уже существует', 'info')
+    # # if URL not exist
+    # except TypeError:
+    #     created_at = date.today()
+    #     url_data = add_url(url, created_at)
+    #     url_id = url_data['id']
+    #     flash('Страница успешно добавлена', 'success')
+    # url_id, message, category = get_url_id(url)
+    flash(message, category)
+    return redirect(url_for('url', url_id=url))
 
 
 @app.post('/urls/<id>/checks')
