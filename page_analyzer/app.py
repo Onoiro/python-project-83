@@ -6,12 +6,11 @@ from dotenv import load_dotenv
 import os
 from datetime import date
 from urllib.parse import urlparse
-import validators
 import requests
 from bs4 import BeautifulSoup
 import re
 from .db import get_url_data, get_all_urls, \
-    get_url_checks, get_url_by_name, add_url, add_url_check
+    get_url_checks, add_url_check
 from .urls import get_correct_url
 
 
@@ -58,18 +57,7 @@ def urls_post():
     url, message, category = get_correct_url(input)
     if url is False:
         flash(message, category)
-        return redirect(url_for('index'))
-    # url_data = get_url_by_name(url)
-    # try:
-    #     url_id = url_data['id']
-    #     flash('Страница уже существует', 'info')
-    # # if URL not exist
-    # except TypeError:
-    #     created_at = date.today()
-    #     url_data = add_url(url, created_at)
-    #     url_id = url_data['id']
-    #     flash('Страница успешно добавлена', 'success')
-    # url_id, message, category = get_url_id(url)
+        return redirect(url_for('index'), 302)
     flash(message, category)
     return redirect(url_for('url', url_id=url))
 
