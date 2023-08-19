@@ -1,8 +1,8 @@
 from urllib.parse import urlparse
 import validators
-import requests
-from bs4 import BeautifulSoup
-import re
+# import requests
+# from bs4 import BeautifulSoup
+# import re
 from datetime import date
 from .db import get_url_by_name, add_url
 
@@ -27,7 +27,7 @@ def get_correct_url(url):
         url_id = url_data['id']
         message = 'Страница уже существует'
         category = 'info'
-     # if URL not exist
+    # if URL not exist
     except TypeError:
         message = 'Страница успешно добавлена'
         category = 'success'

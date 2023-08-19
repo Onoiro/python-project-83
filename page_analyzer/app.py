@@ -5,7 +5,6 @@ from flask import Flask, request, render_template, \
 from dotenv import load_dotenv
 import os
 from datetime import date
-from urllib.parse import urlparse
 import requests
 from bs4 import BeautifulSoup
 import re
