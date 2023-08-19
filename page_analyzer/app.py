@@ -57,7 +57,7 @@ def urls_post():
     url, message, category = get_correct_url(input)
     if url is False:
         flash(message, category)
-        return redirect(url_for('index'), 422)
+        return render_template('index.html')
     flash(message, category)
     return redirect(url_for('url', url_id=url))
 
