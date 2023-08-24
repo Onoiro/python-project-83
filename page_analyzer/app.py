@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import re
 from .db import get_url_data, get_all_urls, \
     get_url_checks, add_url_check
-from .urls import get_correct_url
+from .urls import get_correct_url, get_url_seo_data
 
 
 app = Flask(__name__)
@@ -63,37 +63,9 @@ def urls_post():
 
 @app.post('/urls/<id>/checks')
 def checks(id):
-    url_data = get_url_data(id)
-    url_id = url_data['id']
-    try:
-        r = requests.get(url_data['name'])
-        r.raise_for_status()
-        status_code = r.status_code
-        check_created_at = date.today()
-        soup = BeautifulSoup(r.text, 'html.parser')
-        h1 = soup.h1
-        h1 = soup.h1.string if h1 else ''
-        title = soup.title
-        title = soup.title.string if title else ''
-        description = str(soup.find(attrs={"name": "description"}))
-        pattern = r'"(.+?)"'
-        description = re.search(pattern, description)
-        description = description.group(1) if description else ''
-        flash('Страница успешно проверена', 'success')
-        add_url_check(id, status_code, h1, title,
-                      description, check_created_at)
-        return redirect(url_for(
-            'url',
-            check_id=id,
-            url_id=url_id,
-            h1=h1,
-            status_code=status_code,
-            title=title,
-            check_created_at=check_created_at
-        ))
-    except requests.exceptions.RequestException:
-        flash('Произошла ошибка при проверке', 'danger')
-        return redirect(url_for('url', url_id=url_id), 302)
+    message, category = get_url_seo_data(id)
+    flash(message, category)
+    return redirect(url_for('url', url_id=id))
 
 
 @app.errorhandler(404)
