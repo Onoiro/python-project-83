@@ -4,12 +4,7 @@ from flask import Flask, request, render_template, \
     redirect, url_for, flash, get_flashed_messages
 from dotenv import load_dotenv
 import os
-from datetime import date
-import requests
-from bs4 import BeautifulSoup
-import re
-from .db import get_url_data, get_all_urls, \
-    get_url_checks, add_url_check
+from .db import get_url_data, get_all_urls, get_url_checks
 from .urls import get_correct_url, get_url_seo_data
 
 
