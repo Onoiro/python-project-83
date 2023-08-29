@@ -5,7 +5,8 @@ from flask import Flask, request, render_template, \
 from dotenv import load_dotenv
 import os
 from .db import get_url_data, get_all_urls, get_url_checks
-from .urls import get_correct_url, get_url_seo_data
+from .urls import get_correct_url
+from .parser import get_url_seo_data
 
 
 app = Flask(__name__)
