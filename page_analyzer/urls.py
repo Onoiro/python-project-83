@@ -1,10 +1,7 @@
 from urllib.parse import urlparse
 import validators
-import requests
-from bs4 import BeautifulSoup
-import re
 from datetime import date
-from .db import get_url_data, get_url_by_name, add_url, add_url_check
+from .db import get_url_by_name, add_url
 
 
 MAX_URL_LEN = 255
