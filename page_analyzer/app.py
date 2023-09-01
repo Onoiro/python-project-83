@@ -64,6 +64,7 @@ def urls_post():
     else:
         created_at = date.today()
         url_data = add_url(url, created_at)
+        flash('Страница успешно добавлена', 'success')
     url_id = url_data['id']
     return redirect(url_for('url', url_id=url_id))
 
