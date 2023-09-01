@@ -16,6 +16,7 @@ def get_correct_url(url):
     if not validators.url(url):
         message = 'Некорректный URL'
         return status, message, category
+    url = normalize_url(url)
     url_data = get_url_data(url)
     if url_data:
         url_id = url_data['id']
@@ -30,8 +31,12 @@ def get_correct_url(url):
     return url_id, message, category
 
 
-def get_url_data(url):
+def normalize_url(url):
     url_parts = urlparse(url)
     url = f"{url_parts.scheme}://{url_parts.netloc}"
+    return url
+
+
+def get_url_data(url):
     url_data = get_url_by_name(url)
     return url_data
