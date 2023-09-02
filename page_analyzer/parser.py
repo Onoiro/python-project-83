@@ -2,11 +2,10 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from datetime import date
-from .db import get_url_data, add_url_check
+from .db import add_url_check
 
 
 def get_url_seo_data(url, id):
-    
     try:
         r = requests.get(url)
         r.raise_for_status()
