@@ -19,10 +19,8 @@ def get_status_code(response):
 
 def get_url_seo_data(response):
     soup = BeautifulSoup(response.text, 'html.parser')
-    h1 = soup.h1
-    h1 = soup.h1.string if h1 else ''
-    title = soup.title
-    title = soup.title.string if title else ''
+    h1 = soup.h1.string if soup.h1 else ''
+    title = soup.title.string if soup.title else ''
     description = str(soup.find(attrs={"name": "description"}))
     pattern = r'"(.+?)"'
     description = re.search(pattern, description)
