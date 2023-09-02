@@ -5,9 +5,9 @@ from flask import Flask, request, render_template, \
 from dotenv import load_dotenv
 import os
 from .db import get_url_data, get_all_urls, get_url_checks, \
-    get_url_by_name, add_url
+    get_url_by_name, add_url, add_url_check
 from .urls import validate_url, check_url_len, normalize_url
-from .parser import get_url_seo_data
+from .parser import get_url_seo_data, try_get_url, get_status_code
 from datetime import date
 
 
@@ -73,8 +73,16 @@ def urls_post():
 def checks(id):
     url_data = get_url_data(id)
     url = url_data['name']
-    message, category = get_url_seo_data(url, id)
-    flash(message, category)
+    response = try_get_url(url)
+    if response:
+        flash('Страница успешно проверена', 'success')
+        check_created_at = date.today()
+        h1, title, description = get_url_seo_data(response)
+        status_code = get_status_code(response)
+        add_url_check(id, status_code, h1, title,
+                      description, check_created_at)
+    else:
+        flash('Произошла ошибка при проверке', 'danger')
     return redirect(url_for('url', url_id=id))
 
 
