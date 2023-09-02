@@ -5,10 +5,10 @@ from datetime import date
 from .db import get_url_data, add_url_check
 
 
-def get_url_seo_data(id):
-    url_data = get_url_data(id)
+def get_url_seo_data(url, id):
+    
     try:
-        r = requests.get(url_data['name'])
+        r = requests.get(url)
         r.raise_for_status()
         status_code = r.status_code
         check_created_at = date.today()

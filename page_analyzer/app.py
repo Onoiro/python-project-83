@@ -71,7 +71,9 @@ def urls_post():
 
 @app.post('/urls/<id>/checks')
 def checks(id):
-    message, category = get_url_seo_data(id)
+    url_data = get_url_data(id)
+    url = url_data['name']
+    message, category = get_url_seo_data(url, id)
     flash(message, category)
     return redirect(url_for('url', url_id=id))
 
