@@ -24,7 +24,7 @@ def index():
 
 @app.get('/urls/')
 def urls():
-    urls = reversed(get_all_urls())
+    urls = get_all_urls()
     return render_template(
         'urls.html',
         urls=urls
