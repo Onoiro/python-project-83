@@ -37,7 +37,7 @@ def url(url_id):
     url_data = get_url_data(url_id)
     name = url_data['name']
     created_at = url_data['created_at']
-    checks = reversed(get_url_checks(url_id))
+    checks = get_url_checks(url_id)
     return render_template(
         'url.html',
         messages=messages,

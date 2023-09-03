@@ -39,7 +39,7 @@ def get_url_data(id):
 
 def get_url_checks(url_id):
     conn, cur = connect_db()
-    cur.execute("SELECT * FROM url_checks WHERE url_id = (%s)", (url_id, ))
+    cur.execute("SELECT * FROM url_checks WHERE url_id = (%s) ORDER BY id DESC", (url_id, ))
     checks = cur.fetchall()
     close_db(conn, cur)
     return checks
