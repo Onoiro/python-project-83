@@ -23,7 +23,7 @@ def close_db(conn, cur):
 
 def get_all_urls():
     conn, cur = connect_db()
-    cur.execute("SELECT * FROM urls ORDER BY created_at DESC")
+    cur.execute("SELECT * FROM urls ORDER BY id DESC")
     urls = cur.fetchall()
     close_db(conn, cur)
     return urls
