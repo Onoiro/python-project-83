@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+import logging
 
 
 def try_get_url(url):
@@ -9,7 +10,7 @@ def try_get_url(url):
         response.raise_for_status()
         return response
     except requests.exceptions.RequestException as error:
-        print(error)
+        logging.exception(error)
 
 
 def get_status_code(response):
