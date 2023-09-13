@@ -21,6 +21,7 @@ def connect_db(func):
         return result
     return wrapper
 
+
 def close_db(conn, cur):
     conn.close()
     cur.close()
