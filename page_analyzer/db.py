@@ -15,7 +15,7 @@ def connect_db(func):
         except psycopg2.OperationalError:
             print('Can`t establish connection to database')
             return None
-        result = func(conn, cur, *args, **kwargs)
+        result = func(cur, *args, **kwargs)
         conn.commit()
         close_db(conn, cur)
         return result
@@ -28,21 +28,21 @@ def close_db(conn, cur):
 
 
 @connect_db
-def get_all_urls(conn, cur):
+def get_all_urls(cur):
     cur.execute("SELECT * FROM urls ORDER BY id DESC")
     urls = cur.fetchall()
     return urls
 
 
 @connect_db
-def get_url_data(conn, cur, id):
+def get_url_data(cur, id):
     cur.execute("SELECT * FROM urls WHERE id = (%s)", (id, ))
     url_data = cur.fetchone()
     return url_data
 
 
 @connect_db
-def get_url_checks(conn, cur, url_id):
+def get_url_checks(cur, url_id):
     cur.execute("SELECT * FROM url_checks WHERE url_id = (%s) \
                 ORDER BY id DESC", (url_id, ))
     checks = cur.fetchall()
@@ -50,14 +50,14 @@ def get_url_checks(conn, cur, url_id):
 
 
 @connect_db
-def get_url_by_name(conn, cur, url):
+def get_url_by_name(cur, url):
     cur.execute("SELECT * FROM urls WHERE name = (%s)", (url, ))
     url_data = cur.fetchone()
     return url_data
 
 
 @connect_db
-def add_url(conn, cur, url, created_at):
+def add_url(cur, url, created_at):
     cur.execute('INSERT INTO urls (name, created_at) VALUES (%s, %s) \
                      RETURNING id', (url, created_at))
     url_data = cur.fetchone()
@@ -65,7 +65,7 @@ def add_url(conn, cur, url, created_at):
 
 
 @connect_db
-def add_url_check(conn, cur, id, status_code, h1, title,
+def add_url_check(cur, id, status_code, h1, title,
                   description, check_created_at):
     url_data = get_url_data(id)
     url_id = url_data['id']
