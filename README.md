@@ -11,7 +11,7 @@ Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\>
 
 ## Install for personal local use
 ```bash
-git clone git@github.com:Onoiro/python-project-83.git
+git clone https://git@github.com:Onoiro/python-project-83.git
 cd python-project-83
 
 # build app & connect to database:
