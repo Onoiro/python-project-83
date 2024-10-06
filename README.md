@@ -17,6 +17,9 @@ cd python-project-83
 # create local project database
 sudo -u postgres createdb --owner=user my_db_name
 
+# set DATABASE_URL to specify the location and connection parameters to your database:
+export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
+
 # create .env file contains environment variables
 touch .env
 nano .env
@@ -24,9 +27,6 @@ nano .env
 # specify environment variables in .env, for example:
 DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 SECRET_KEY="secret_key"
-
-# set DATABASE_URL environment variable to specify the location and connection parameters to PostgreSQL database:
-export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 
 # build app & connect to database:
 # poetry install && psql -a -d $DATABASE_URL -f database.sql

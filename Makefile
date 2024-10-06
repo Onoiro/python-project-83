@@ -1,6 +1,3 @@
-install:
-	poetry install
-
 build:
 	./build.sh
 
@@ -16,7 +13,6 @@ start:
 
 lint:
 	poetry run flake8 page_analyzer/
-	
 
 package-install:
 	python3 -m pip install --force-reinstall --user dist/*.whl
