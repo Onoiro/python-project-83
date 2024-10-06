@@ -14,17 +14,23 @@ Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\>
 git clone https://git@github.com:Onoiro/python-project-83.git
 cd python-project-83
 
-# build app & connect to database:
-# poetry install && psql -a -d $DATABASE_URL -f database.sql
-make build
+# create local project database
+sudo -u postgres createdb --owner=user my_db_name
 
 # create .env file contains environment variables
 touch .env
 nano .env
 
 # specify environment variables in .env, for example:
-DATABASE_URL=postgresql://user:password@connect_url/database
+DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 SECRET_KEY="secret_key"
+
+# set DATABASE_URL environment variable to specify the location and connection parameters to PostgreSQL database:
+export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
+
+# build app & connect to database:
+# poetry install && psql -a -d $DATABASE_URL -f database.sql
+make build
 
 # run in development mode:
 # poetry run flask --app page_analyzer/app --debug run
