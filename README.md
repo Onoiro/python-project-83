@@ -22,6 +22,8 @@ export DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 
 # create .env file contains environment variables
 touch .env
+
+# open .env file for edit
 nano .env
 
 # specify environment variables in .env, for example:
