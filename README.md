@@ -29,6 +29,7 @@ nano .env
 # specify environment variables in .env, for example:
 DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 SECRET_KEY="secret_key"
+PORT=8001
 
 # build app & connect to database:
 # poetry install && psql -a -d $DATABASE_URL -f database.sql
@@ -39,7 +40,6 @@ make build
 make dev
 
 # run production:
-# (PORT ?= 8000)
 # poetry run gunicorn -w 5 -b 0.0.0.0:$(PORT) page_analyzer.app:app
 make start
 ```
