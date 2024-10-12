@@ -11,8 +11,8 @@ dev:
 	poetry run flask --app page_analyzer/app --debug run
 
 # Загрузка значения переменной PORT из .env файла или 8000 по умолчанию
-PORT ?= $(shell [ -f .env ] && sed -n 's/^PORT=\(.*\)/\1/p' .env || echo 8000)
-
+# PORT ?= $(shell sed -n 's/^PORT=\(.*\)/\1/p' .env || echo 8000)
+PORT ?= 8000
 check:
 	@echo "PORT is set to: $(PORT)"
 
