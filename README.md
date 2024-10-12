@@ -29,7 +29,6 @@ nano .env
 # specify environment variables in .env, for example:
 DATABASE_URL=postgresql://user:password@localhost:5432/my_db_name
 SECRET_KEY="secret_key"
-PORT=8001
 
 # build app & connect to database:
 # poetry install && psql -a -d $DATABASE_URL -f database.sql
