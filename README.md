@@ -2,10 +2,10 @@
 ![Page Analyzer Actions](https://github.com/Onoiro/python-project-83/actions/workflows/page-analyzer-check.yml/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/3807cda22bbcca6fee03/maintainability)](https://codeclimate.com/github/Onoiro/python-project-83/maintainability)
 
-## Welcome to [Page-analyzer](http://45.155.204.194:8000)
+## Welcome to [Page-analyzer](http://weban.2-way.ru:8000)
 Use this application for a minimal SEO analysis of a website.
 
-Click [http://45.155.204.194:8000](http://45.155.204.194:8000/) to get Page-analyzer
+Click [http://45.155.204.194:8000](http://weban.2-way.ru:8000) to get Page-analyzer
 
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
