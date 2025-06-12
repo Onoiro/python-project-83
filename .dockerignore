@@ -16,3 +16,4 @@ pip-delete-this-directory.txt
 .pytest_cache
 .mypy_cache
 Dockerfile
+todo.txt
