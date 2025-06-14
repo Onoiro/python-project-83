@@ -9,7 +9,7 @@ Visit [https://weban.2-way.ru](https://weban.2-way.ru) to try WebAnalyzer
 
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
-### Requirements
+## Requirements
 
 #### For local installation without Docker:
 * OS Linux/macOS
@@ -21,7 +21,7 @@ Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\>
 * Docker Engine >= 20.10
 * Docker Compose >= 2.0
 
-### Installation and Setup
+## Installation and Setup
 
 #### Option 1: Run with Docker (Recommended)
 ```bash
@@ -127,7 +127,7 @@ make lint
 make package-install
 ```
 
-### Usage
+## Usage
 
 After starting the application, open your browser and navigate to:
 
@@ -137,7 +137,7 @@ After starting the application, open your browser and navigate to:
 Enter a website URL for analysis and get a report on its SEO suitability.
 
 
-### Project Architecture
+## Project Architecture
 * Backend: Flask (Python)
 * Database: PostgreSQL
 * Deployment: Docker + Docker Compose
@@ -145,9 +145,9 @@ Enter a website URL for analysis and get a report on its SEO suitability.
 * Dependency Management: Poetry
 
 
-### Troubleshooting
+## Troubleshooting
 
-#### Docker Issues:
+### Docker Issues:
 
 **Port already in use:**
 ```bash
@@ -172,14 +172,14 @@ sudo usermod -aG docker $USER
 docker compose ps
 ```
 
-#### Local Installation Issues:
+### Local Installation Issues:
 
 **Database connection errors:**
 * Verify DATABASE_URL is correct
 * Make sure PostgreSQL is running
 * Check user permissions for the database
 
-#### Poetry issues:
+### Poetry issues:
 
 ```bash
 # Update Poetry
@@ -189,7 +189,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 poetry cache clear pypi --all
 ```
 
-#### License
+### License
 This project is educational and created as part of Hexlet learning program.
 
 
