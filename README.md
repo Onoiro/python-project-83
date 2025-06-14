@@ -1,6 +1,6 @@
 [![Actions Status](https://github.com/Onoiro/python-project-83/workflows/hexlet-check/badge.svg)](https://github.com/Onoiro/weban/actions)
 ![WebAnalyzer Actions](https://github.com/Onoiro/weban/actions/workflows/page-analyzer-check.yml/badge.svg)
-[![Maintainability](https://api.codeclimate.com/v1/badges/3807cda22bbcca6fee03/maintainability)](https://codeclimate.com/github/Onoiro/weban/maintainability)
+[![Maintainability](https://qlty.sh/badges/d5121bbd-7936-477b-84a2-79036a786623/maintainability.svg)](https://qlty.sh/gh/Onoiro/projects/weban)
 
 ## Welcome to [WebAnalyzer](https://weban.2-way.ru)
 Use this application for minimal SEO analysis of websites.
