@@ -7,7 +7,7 @@ readme = "README.md"
 packages = [{include = "page_analyzer"}]
 classifiers = ["Programming Language :: Python :: 3",
                "Environment :: Web"]
-repository = "https://github.com/Onoiro/python-project-83"
+repository = "https://github.com/Onoiro/weban"
 
 
 [tool.poetry.scripts]
