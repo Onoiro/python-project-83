@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "hexlet-code"
-version = "0.1.0"
+name = "weban"
+version = "0.2.0"
 description = "Free check sites for SEO suitability"
 authors = ["Andrey Bogatyrev <t2way@yandex.ru>"]
 readme = "README.md"
