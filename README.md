@@ -9,57 +9,52 @@ Visit [https://weban.2-way.ru](https://weban.2-way.ru) to try WebAnalyzer
 
 Check website accessibility and presence of \<h1\>, \<title\> tags, and \<meta\> tag with attribute name="description" content="...".
 
-## Requirements
+### Requirements
 
-### For local installation without Docker:
+#### For local installation without Docker:
 * OS Linux/macOS
 * Python >= 3.8.1
 * Poetry >= 1.2.2
 * PostgreSQL >= 12.15
 
-### For Docker deployment:
+#### For Docker deployment:
 * Docker Engine >= 20.10
 * Docker Compose >= 2.0
 
-## Installation and Setup
+### Installation and Setup
 
-### Option 1: Run with Docker (Recommended)
-
-1. **Clone the repository:**
+#### Option 1: Run with Docker (Recommended)
 ```bash
+# clone the repository
 git clone https://github.com/Onoiro/weban.git
 cd weban
-```
-2. **Create environment variables file:**
-```bash
-# Create .env file
+
+# create environment variables file
 touch .env
 
-# Add the following variables (edit values as needed):
-cat &gt; .env &lt;&lt; EOF
+# open .env file for edit
+nano .env
+
+# add the following variables (edit values as needed):
 POSTGRES_DB=webanalyzer_db
 POSTGRES_USER=your_username
 POSTGRES_PASSWORD=your_secure_password
 SECRET_KEY=your_secret_key_here
-EOF
-```
-3. **Start the application:**
-```bash
-# Build and start all services
+
+# build and start all services
 make docker-up
 
-# Or use Docker Compose directly:
+# or use Docker Compose directly:
 docker compose up -d
-```
-4. **Check status:**
-```bash
-# View logs
+
+# view logs
 make docker-logs
 
-# Or:
+# or:
 docker compose logs -f
 ```
 The application will be available at: http://localhost:8000
+
 **Additional Docker commands:**
 ```bash
 # Stop the application
@@ -87,59 +82,52 @@ make prod-deploy
 make docker-clean
 ```
 
-### Option 2: Local Installation without Docker
-
-1. **Clone the repository:**
+#### Option 2: Local Installation without Docker
 ```bash
+# clone the repository
 git clone https://github.com/Onoiro/weban.git
 cd weban
-```
-2. **Create PostgreSQL database:**
-```bash
-# Create database (replace parameters with your own)
+
+# create PostgreSQL database (replace parameters with your own)
 sudo -u postgres createdb --owner=your_user webanalyzer_db
-```
-3. **Configure environment variables:**
-```bash
-# Create .env file
+
+# Create .env file and configure environment variables
 touch .env
 
-# Add environment variables:
-cat &gt; .env &lt;&lt; EOF
+# open .env file for edit
+nano .env
+
+# add environment variables:
 DATABASE_URL=postgresql://your_user:your_password@localhost:5432/webanalyzer_db
 SECRET_KEY=your_secret_key_here
-EOF
-```
-4. **Install dependencies and initialize database:**
-```bash
-# Install dependencies and initialize DB
+
+# install dependencies and initialize DB
 make build
 
-# Or run commands separately:
+# or run commands separately:
 make install
 psql -a -d $DATABASE_URL -f database.sql
-```
-5. **Start the application:**
-```bash
-# Development mode
+
+# start the application in development mode
 make dev
 
-# Production mode
+# start the application in production mode
 make start
 
-# Or specify custom port:
+# or specify custom port:
 PORT=8080 make start
 ```
 **Additional development commands:**
+
 ```bash
-# Code linting
+# code linting
 make lint
 
-# Install package locally
+# install package locally
 make package-install
 ```
 
-## Usage
+### Usage
 
 After starting the application, open your browser and navigate to:
 
@@ -149,7 +137,7 @@ After starting the application, open your browser and navigate to:
 Enter a website URL for analysis and get a report on its SEO suitability.
 
 
-## Project Architecture
+### Project Architecture
 * Backend: Flask (Python)
 * Database: PostgreSQL
 * Deployment: Docker + Docker Compose
@@ -157,9 +145,9 @@ Enter a website URL for analysis and get a report on its SEO suitability.
 * Dependency Management: Poetry
 
 
-## Troubleshooting
+### Troubleshooting
 
-### Docker Issues:
+#### Docker Issues:
 
 **Port already in use:**
 ```bash
@@ -184,14 +172,14 @@ sudo usermod -aG docker $USER
 docker compose ps
 ```
 
-### Local Installation Issues:
+#### Local Installation Issues:
 
 **Database connection errors:**
 * Verify DATABASE_URL is correct
 * Make sure PostgreSQL is running
 * Check user permissions for the database
 
-### Poetry issues:
+#### Poetry issues:
 
 ```bash
 # Update Poetry
@@ -201,7 +189,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 poetry cache clear pypi --all
 ```
 
-### License
+#### License
 This project is educational and created as part of Hexlet learning program.
 
 
